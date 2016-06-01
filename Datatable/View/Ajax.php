@@ -35,6 +35,7 @@ class Ajax extends AbstractViewOptions
     protected $type;
 
     /**
+<<<<<<< d06aa7e0fa89aaf4d5cef3d5e9e056e929c81486
      * Use Datatables' Pipeline.
      *
      * @see https://datatables.net/examples/server_side/pipeline.html
@@ -42,6 +43,14 @@ class Ajax extends AbstractViewOptions
      * @var int Number of pages to cache. Set to zero to disable feature.
      */
     protected $pipeline;
+=======
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'url' => '',
+        'type' => 'GET'
+    );
+>>>>>>> Allow repeated overriding of view options
 
     //-------------------------------------------------
     // OptionsInterface
@@ -52,12 +61,15 @@ class Ajax extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+<<<<<<< d06aa7e0fa89aaf4d5cef3d5e9e056e929c81486
         $resolver->setDefaults(array(
             'url' => '',
             'type' => 'GET',
             'pipeline' => 0
         ));
 
+=======
+>>>>>>> Allow repeated overriding of view options
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('pipeline', 'int');

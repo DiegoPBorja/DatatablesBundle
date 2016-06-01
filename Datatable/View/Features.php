@@ -120,6 +120,7 @@ class Features extends AbstractViewOptions
     protected $extensions;
 
     /**
+<<<<<<< d06aa7e0fa89aaf4d5cef3d5e9e056e929c81486
      * Search result highlighting.
      *
      * @var boolean
@@ -132,6 +133,27 @@ class Features extends AbstractViewOptions
      * @var string
      */
     protected $highlightColor;
+=======
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'auto_width' => true,
+        'defer_render' => false,
+        'info' => true,
+        'jquery_ui' => false,
+        'length_change' => true,
+        'ordering' => true,
+        'paging' => true,
+        'processing' => true,
+        'scroll_x' => false,
+        'scroll_y' => '',
+        'searching' => true,
+        'server_side' => true,
+        'state_save' => false,
+        'delay' => 0,
+        'extensions' => array()
+    );
+>>>>>>> Allow repeated overriding of view options
 
     //-------------------------------------------------
     // OptionsInterface
@@ -142,6 +164,7 @@ class Features extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+<<<<<<< d06aa7e0fa89aaf4d5cef3d5e9e056e929c81486
         $resolver->setDefaults(array(
             'auto_width' => true,
             'defer_render' => false,
@@ -161,6 +184,8 @@ class Features extends AbstractViewOptions
             'highlight_color' => 'red'
         ));
 
+=======
+>>>>>>> Allow repeated overriding of view options
         $resolver->setAllowedTypes('auto_width', 'bool');
         $resolver->setAllowedTypes('defer_render', 'bool');
         $resolver->setAllowedTypes('info', 'bool');
