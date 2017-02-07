@@ -71,14 +71,25 @@ $this->columnBuilder
 ;
 ```
 
-For Doctrine Embeddables:
+For Doctrine Embeddable Properties use `\\.`:
 
+`period` is an embeddable, and `startDate` is a property.
 ``` php
 $this->columnBuilder
-    ->add('credentials\\.username', 'column', array(
-        'title' => 'Username'
-    ))
-;
+    ->add('period\\.startDate', 'column', array(
+        'title' => 'Start Date'
+    ));
+```    
+
+For nested Doctrine Embeddables use `\\.`:
+
+`price` is an embeddable, `currency` is a nested embeddable, `code` is a property.
+
+```    
+$this->columnBuilder
+    ->add('product.price\\.currency\\.code', 'column', array(
+        'title' => 'Currency'
+    ));
 ```
 ___
 

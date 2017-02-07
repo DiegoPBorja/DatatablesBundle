@@ -300,36 +300,29 @@ class DatatableQuery
             $metadata = $this->metadata;
 
             if (true === $this->isSelectColumn($data)) {
-                $parts = explode('\\\\.', $data);
+                $data = str_replace('\\\\.', '~', $data); // embeddable properties' dots are temporarily substituted
+                $parts = explode('.', $data);
 
-                if (count($parts) > 1) {
-                    // If it's an embedded class, we can query without JOIN
-                    if (array_key_exists($parts[0], $metadata->embeddedClasses)) {
-                        $this->selectColumns[$currentAlias][] = str_replace('\\', '', $data);
-                        $this->addSearchOrderColumn($key, $currentAlias, $data);
-                        continue;
-                    }
-                } else {
-                    $parts = explode('.', $data);
+                while (count($parts) > 1) {
+                    $previousPart = $currentPart;
+                    $previousAlias = $currentAlias;
 
-                    while (count($parts) > 1) {
-                        $previousPart = $currentPart;
-                        $previousAlias = $currentAlias;
+                    $currentPart = array_shift($parts);
+                    $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
 
-                        $currentPart = array_shift($parts);
-                        $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
-
-                        if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
-                            $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
-                        }
-
-                        $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
+                    if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
+                        $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
                     }
 
-                    $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
-                    $this->selectColumns[$currentAlias][] = $parts[0];
-                    $this->addSearchOrderColumn($key, $currentAlias, $parts[0]);
+                    $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
                 }
+
+                $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
+
+                $firstPart = str_replace('~', '.', $parts[0]); // restore embeddable properties' dots
+                $this->selectColumns[$currentAlias][] = $firstPart;
+                $this->addSearchOrderColumn($key, $currentAlias, $firstPart);
+
             } else {
                 $this->orderColumns[] = null;
                 $this->searchColumns[] = null;
